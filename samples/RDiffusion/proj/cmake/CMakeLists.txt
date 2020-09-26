@@ -11,5 +11,8 @@ include( "${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake" )
 ci_make_app(
 	SOURCES		${APP_PATH}/src/RDiffusionApp.cpp
 	INCLUDES	${APP_PATH}/include
+    RESOURCES   ${APP_PATH}/resources/gsrd_frag.glsl
+		${APP_PATH}/resources/passThru_vert.glsl
+		${APP_PATH}/resources/starter.jpg
 	CINDER_PATH ${CINDER_PATH}
 )

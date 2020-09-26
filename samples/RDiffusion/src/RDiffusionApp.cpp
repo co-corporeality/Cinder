@@ -45,7 +45,8 @@ class RDiffusionApp : public App {
 
 void RDiffusionApp::prepareSettings( Settings *settings )
 {
-	settings->setWindowSize( SIZE, SIZE );
+	settings->setHighDensityDisplayEnabled(true);
+    settings->setWindowSize( SIZE, SIZE );
 	settings->setFrameRate( 60.0f );
 }
 
@@ -107,13 +108,17 @@ void RDiffusionApp::update()
 	const int ITERATIONS = 25;
 	// normally setMatricesWindow flips the projection vertically so that the upper left corner is 0,0
 	// but we don't want to do that when we are rendering the FBOs onto each other, so the last param is false
-	gl::setMatricesWindow( mFBOs[0]->getSize() );
-	gl::viewport( mFBOs[0]->getSize() );
+	//gl::setMatricesWindow( toPixels(mFBOs[0]->getSize()) );
+	//gl::viewport( toPixels(mFBOs[0]->getSize()) );
 	for( int i = 0; i < ITERATIONS; i++ ) {
 		mCurrentFBO = ( mCurrentFBO + 1 ) % 2;
 		mOtherFBO   = ( mCurrentFBO + 1 ) % 2;
 		
 		gl::ScopedFramebuffer fboBind( mFBOs[ mCurrentFBO ] );
+        gl::ScopedViewport vp(mFBOs[0]->getSize());
+        
+        gl::ScopedMatrices mat;
+        gl::setMatricesWindow( mFBOs[0]->getSize() );
 		
 		{
 			gl::ScopedTextureBind tex( mFBOs[ mOtherFBO ]->getColorTexture(), 0 );
@@ -142,9 +147,8 @@ void RDiffusionApp::update()
 void RDiffusionApp::draw()
 {
 	gl::clear();
-	gl::setMatricesWindow( getWindowSize() );
-	gl::viewport( getWindowSize() );
-	{
+    
+    {
 		gl::ScopedTextureBind bind( mFBOs[mCurrentFBO]->getColorTexture() );
 		gl::drawSolidRect( getWindowBounds() );
 	}
