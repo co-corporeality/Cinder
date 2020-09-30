@@ -91,6 +91,7 @@ function( ci_make_app )
 		set( ICON_NAME "CinderApp.icns" )
 		set( ICON_PATH "${ARG_CINDER_PATH}/samples/data/${ICON_NAME}" )
 
+
 		# copy .icns to bundle's resources folder
 		set_source_files_properties( ${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
 		# copy any other resources specified by user
@@ -110,6 +111,23 @@ function( ci_make_app )
 		endif()
 	elseif( CINDER_MSW )
 		if( MSVC )
+			# TODO: check if this works...
+			set(RES_FILE "${CMAKE_BINARY_DIR}/resources.rc")
+			file(WRITE ${RES_FILE} "#include \"..\\include\\Resources.h\"\n\n")
+
+			# add .rc file to sources
+			list(APPEND ARG_SOURCES "${CMAKE_BINARY_DIR}/resources.rc")
+			file(STRINGS "${ARG_INCLUDES}/Resources.h" resources)
+
+			foreach(line in ${resources})
+				string(REGEX MATCH "#define[ \t]*([A-Za-z0-9_]*)" match ${line})
+				if (CMAKE_MATCH_1)
+					set(RES ${CMAKE_MATCH_1})
+					file(APPEND ${RES_FILE} "${RES}\n")
+				endif()
+			endforeach()
+			# end TODO
+
 			# Override the default /MD with /MT
 			foreach(
 				flag_var
