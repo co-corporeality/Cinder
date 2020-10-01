@@ -111,14 +111,14 @@ function( ci_make_app )
 		endif()
 	elseif( CINDER_MSW )
 		if( MSVC )
-			# TODO: check if this works...
-			set(RES_FILE "${CMAKE_BINARY_DIR}/resources.rc")
+			# create .rc file
+			set(RES_FILE "${CMAKE_BINARY_DIR}/${ARG_APP_NAME}.rc")
 			file(WRITE ${RES_FILE} "#include \"..\\include\\Resources.h\"\n\n")
-
 			# add .rc file to sources
-			list(APPEND ARG_SOURCES "${CMAKE_BINARY_DIR}/resources.rc")
-			file(STRINGS "${ARG_INCLUDES}/Resources.h" resources)
+			list(APPEND ARG_SOURCES "${RES_FILE}")
 
+			# parse header file
+			file(STRINGS "${ARG_INCLUDES}/Resources.h" resources)
 			foreach(line in ${resources})
 				string(REGEX MATCH "#define[ \t]*([A-Za-z0-9_]*)" match ${line})
 				if (CMAKE_MATCH_1)
@@ -148,6 +148,8 @@ function( ci_make_app )
 			cmake_policy( SET CMP0015 OLD )
 			link_directories( "${CINDER_PATH}/lib/${CINDER_TARGET_SUBFOLDER}" )
 			cmake_policy( POP )
+
+			set(CMAKE_CXX_STANDARD 17)
 		endif()
 	endif()
 
