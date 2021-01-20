@@ -12,4 +12,6 @@ ci_make_app(
 	SOURCES		${APP_PATH}/src/QuaternionAccumApp.cpp
 	INCLUDES	${APP_PATH}/include
 	CINDER_PATH ${CINDER_PATH}
+	RESOURCES ${APP_PATH}/resources/Plane.png
+		${APP_PATH}/resources/Stripe.png
 )

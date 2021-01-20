@@ -162,4 +162,3 @@ list( APPEND CINDER_SKIP_SAMPLES
 	_opengl/ParticleSphereCS
 	_opengl/NVidiaComputeParticles
 )
-

@@ -1,4 +1,5 @@
 cmake_minimum_required( VERSION 3.10 FATAL_ERROR )
+include(CheckIncludeFile)
 
 ci_log_v( "Building Cinder for ${CINDER_TARGET}" )
 
@@ -8,6 +9,12 @@ set( CINDER_INC_DIR		"${CINDER_PATH}/include" )
 if( NOT CINDER_MSW )
 	add_definitions( -Wfatal-errors )
 endif()
+
+check_include_file(unistd.h HAVE_UNISTD_H)
+if (HAVE_UNISTD_H)
+	add_compile_definitions(HAVE_UNISTD_H)
+endif()
+
 
 list( APPEND CMAKE_MODULE_PATH ${CINDER_CMAKE_DIR} ${CMAKE_CURRENT_LIST_DIR}/modules )
 

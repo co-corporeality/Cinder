@@ -14,5 +14,8 @@ ci_make_app(
 			${APP_PATH}/src/TextRibbon.cpp
 			${APP_PATH}/src/TrianglePiece.cpp
 	INCLUDES	${APP_PATH}/include
+	RESOURCES ${APP_PATH}/RESOURCES/Asap-Regular.ttf
+		${APP_PATH}/RESOURCES/Icon.png
+		${APP_PATH}/RESOURCES/Kreon-Bold.ttf
 	CINDER_PATH ${CINDER_PATH}
 )
